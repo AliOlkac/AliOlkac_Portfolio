@@ -9,14 +9,14 @@ export const siteConfig = {
   links: {
     github: 'https://github.com/aliolkac',
     linkedin: 'https://linkedin.com/in/aliolkac',
-    email: 'mailto:aliolkac@gmail.com',
+    email: 'mailto:aliolkac43@gmail.com',
   },
   socialLinks: {
     github: 'https://github.com/aliolkac',
     twitter: 'https://twitter.com/aliolkac',
     linkedin: 'https://linkedin.com/in/aliolkac',
   },
-  email: 'aliolkac@gmail.com'
+  email: 'aliolkac43@gmail.com'
 }
 
 // Navigasyon linkleri

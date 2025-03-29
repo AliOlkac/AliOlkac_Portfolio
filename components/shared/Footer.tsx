@@ -91,7 +91,7 @@ const Footer = () => {
               </li>
               <li className="text-text-secondary">
                 <span className="block">Konum:</span>
-                <span className="block">İstanbul, Türkiye</span>
+                <span className="block">Kütahya, Türkiye</span>
               </li>
             </ul>
           </div>
