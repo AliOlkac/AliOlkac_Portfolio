@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, Suspense } from "react";
+import React, { useState, useRef, Suspense, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,13 +14,13 @@ interface StarBackgroundProps {
 const StarBackground = (props: StarBackgroundProps) => {
   const ref = useRef<THREE.Points>(null);
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5000), { radius: 1.2 })
+    random.inSphere(new Float32Array(2500), { radius: 1.2 })
   );
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta/10;
-      ref.current.rotation.y -= delta/15;
+      ref.current.rotation.x -= delta/15;
+      ref.current.rotation.y -= delta/20;
     }
   })
 
@@ -45,14 +45,28 @@ const StarBackground = (props: StarBackgroundProps) => {
   )
 };
 
-const StarsCanvas = () => (
-  <div className="w-full h-auto fixed inset-0 -z-10">
-    <Canvas camera={{ position: [0, 0, 1] }}>
-      <Suspense fallback={null}>
-        <StarBackground />
-      </Suspense>
-    </Canvas>
-  </div>
-)
+const StarsCanvas = () => {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  if (!mounted) return null;
+  
+  return (
+    <div className="w-full h-auto fixed inset-0 -z-10">
+      <Canvas camera={{ position: [0, 0, 1] }}>
+        <Suspense fallback={null}>
+          <StarBackground />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}
 
 export default StarsCanvas; 

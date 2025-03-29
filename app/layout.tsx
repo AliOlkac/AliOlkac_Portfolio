@@ -4,16 +4,18 @@ import './globals.css'
 import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
 
-// Font tanımlamaları
+// Font tanımlamaları - display swap ile hızlı gösterim
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 })
 
 const poppins = Poppins({ 
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-poppins',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -45,9 +47,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        {/* Preconnect to important domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-screen bg-background text-text antialiased">
         <Navbar />
-        {children}
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

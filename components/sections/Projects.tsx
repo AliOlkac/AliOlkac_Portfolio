@@ -110,38 +110,34 @@ const ProjectCard: React.FC<{ project: Project; onClick: () => void }> = ({
             src={project.image}
             alt={project.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="lazy"
             style={{ objectFit: "cover" }}
             className="z-0 brightness-[0.9] transition-all duration-300 group-hover:scale-105"
           />
         </div>
       </div>
-      <div className="p-5 h-[35%] flex flex-col justify-between bg-background/90 transition-all duration-300 group-hover:bg-background/80">
-        <div>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {project.tags.map((tag: string, index: number) => (
-              <span
-                key={index}
-                className="text-xs px-2 py-1 bg-highlight/20 text-highlight rounded-full border border-highlight/40 group-hover:bg-highlight/30 group-hover:border-highlight/70 transition-all duration-300"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          <h3 className="text-xl font-bold text-white group-hover:text-highlight transition-colors duration-300 mb-2">
-            {project.title}
-          </h3>
+      <div className="p-5 flex flex-col h-[35%]">
+        <h3 className="text-xl font-semibold mb-2 text-primary">{project.title}</h3>
+        <p className="text-sm line-clamp-2 text-gray-300 mb-4 flex-grow">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {project.tags.slice(0, 3).map((tag, idx) => (
+            <span
+              key={idx}
+              className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-md"
+            >
+              {tag}
+            </span>
+          ))}
+          {project.tags.length > 3 && (
+            <span className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">
+              +{project.tags.length - 3}
+            </span>
+          )}
         </div>
-        <button
-          className="self-start py-1.5 px-4 bg-highlight/20 text-highlight border border-highlight/40 rounded-md hover:bg-highlight/30 transition-colors duration-300 text-sm font-medium"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-        >
-          Daha Fazla Bilgi
-        </button>
       </div>
-      <div className="absolute inset-0 border border-highlight/20 rounded-lg z-20 group-hover:border-highlight/60 group-hover:shadow-neon-green transition-all duration-300"></div>
     </motion.div>
   );
 };

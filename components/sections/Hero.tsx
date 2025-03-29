@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
-import Spline from '@splinetool/react-spline';
 import StarsCanvas from '@/components/ui/StarBackground'
 import { Suspense, useEffect, useState } from 'react';
+// Direkt import'u kaldırıp, koşullu import kullanacağız
 
 const Hero = () => {
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
 
   useEffect(() => {
     // Tarayıcı ortamında olduğumuzdan emin olalım
@@ -23,7 +24,18 @@ const Hero = () => {
       };
 
       window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+      
+      // Sayfa yüklendikten 2 saniye sonra 3D modeli yüklemeye izin ver
+      const timer = setTimeout(() => {
+        if (checkIsDesktop()) {
+          setSplineLoaded(true);
+        }
+      }, 2000);
+      
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(timer);
+      };
     }
   }, []);
 
@@ -32,14 +44,12 @@ const Hero = () => {
       {/* Yıldızlı arka plan */}
       <StarsCanvas />
       
-      {/* Spline 3D Arka Plan - Sadece masaüstünde göster */}
-      {isDesktop && (
+      {/* Spline 3D Arka Plan - Sadece masaüstünde göster ve içerik yüklendikten sonra */}
+      {isDesktop && splineLoaded && (
         <div className="absolute inset-0 z-10">
           <Suspense fallback={<div className="w-full h-full bg-transparent" />}>
-            <Spline
-              scene="https://prod.spline.design/C-8uoB8bQZdwZag5/scene.splinecode" 
-              className="w-full h-full"
-            />
+            {/* Bu kısım sadece tarayıcı tarafında çalışacak */}
+            <SplineDynamic />
           </Suspense>
         </div>
       )}
@@ -124,4 +134,31 @@ const Hero = () => {
   )
 }
 
-export default Hero 
+// Client tarafında dinamik olarak yüklenen bileşen
+const SplineDynamic = () => {
+  const [SplineComponent, setSplineComponent] = useState<any>(null);
+  
+  useEffect(() => {
+    // Client tarafında dinamik import
+    import('@splinetool/react-spline')
+      .then((module) => {
+        setSplineComponent(() => module.default);
+      })
+      .catch(error => {
+        console.error('Spline yüklenemedi:', error);
+      });
+  }, []);
+  
+  if (!SplineComponent) {
+    return <div className="w-full h-full bg-transparent" />;
+  }
+  
+  return (
+    <SplineComponent 
+      scene="https://prod.spline.design/C-8uoB8bQZdwZag5/scene.splinecode"
+      className="w-full h-full"
+    />
+  );
+}
+
+export default Hero; 

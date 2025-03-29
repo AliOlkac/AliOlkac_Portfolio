@@ -124,6 +124,7 @@ html {
 .neon-text {
   text-shadow: 0 0 10px rgba(0, 255, 179, 0.7), 0 0 20px rgba(0, 255, 179, 0.5);
   color: rgba(0, 255, 179, 1);
+  will-change: text-shadow;
 }
 
 /* Sertifika Kartı Özel Efekti */
@@ -245,4 +246,36 @@ html {
   color: #00b3ff;
   text-shadow: 0 0 10px rgba(0, 179, 255, 0.7), 0 0 20px rgba(0, 179, 255, 0.5);
   transition: all 0.3s ease;
+}
+
+/* Animasyonlar için will-change özelliği ekleyerek GPU hızlandırma */
+.certificate-card::before,
+.certificate-card::after,
+.card-hover,
+.glow-border,
+.neon-button,
+.hover\:shadow-neon-blue:hover,
+.hover\:shadow-neon-green:hover,
+.hover\:shadow-neon-purple:hover {
+  will-change: transform, opacity, box-shadow;
+}
+
+/* Loader Animation */
+@keyframes loaderSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 179, 255, 0.2);
+  border-top: 4px solid rgba(0, 179, 255, 1);
+  border-radius: 50%;
+  animation: loaderSpin 1s linear infinite;
+  will-change: transform;
 } 
